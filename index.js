@@ -93,65 +93,80 @@ console.log("added amis property to user", user.amis);
 const removeFriendFromUser = (userToEdit, friendNameToRemove) => {
     if(!userToEdit){
         console.log("No user was given for replace friend");
-        return;
+        return false;
     }
     if(!userToEdit.amis){
         console.log("given user doesn't have a friend property");
-        return;
+        return false;
     }
     if(!friendNameToRemove){
         console.log("name of friend to remove is missing");
-        return;
+        return false;
+    }
+    if(!userToEdit.amis.includes(friendNameToRemove)){
+        console.log("name of friend doesn't belong to friendlist");
+        return false;
     }
     userToEdit.amis.splice(userToEdit.amis.indexOf(friendNameToRemove), 1);
+    return true;
 }
 
 const addFriendToUser = (userToEdit, friendNameToAdd) => {
     if(!userToEdit){
         console.log("No user was given for replace friend");
-        return;
+        return false;
     }
     if(!friendNameToAdd){
         console.log("name of friend to add is missing");
-        return
+        return false;
     }
     if(!userToEdit.amis){
         user.amis = [friendNameToAdd];
-        return
+        return false;
     }
     userToEdit.amis.push(friendNameToAdd)
+    return true;
 }
 
 const replaceFriendOfUser = (userToEdit, friendNameToRemove, friendNameToAdd) => {
     if(!userToEdit){
         console.log("No user was given for replace friend");
-        return;
+        return false;
     }
     if(!userToEdit.amis){
         console.log("given user doesn't have a friend property");
-        return;
+        return false;
     }
     if(!friendNameToRemove){
         console.log("name of friend to remove is missing");
-        return;
+        return false;
+    }
+    if(!userToEdit.amis.includes(friendNameToRemove)){
+        console.log("name of friend doesn't belong to friendlist");
+        return false;
     }
     if(!friendNameToAdd){
         console.log("name of friend to add is missing");
-        return
+        return true;
     }
     const indexOfFriend = userToEdit.amis.indexOf(friendNameToRemove);
     userToEdit.amis[indexOfFriend] = friendNameToAdd;
-
+    return true;
 }
 
-removeFriendFromUser(user, "Henry")
-console.log("removed 'Henry' from user friends", user.amis);
+const friendToRemove = "Henry"
+const resultRemove = removeFriendFromUser(user, friendToRemove)
+if(resultRemove) {console.log(`removed '${friendToRemove}' from user friends`, user.amis);}
 
-addFriendToUser(user, "Jean");
-console.log("added 'Jean' to user friends", user.amis);
+const friendToAdd = "Jean"
+const resultAdd = addFriendToUser(user, friendToAdd);
+if(resultAdd) {console.log(`added '${friendToAdd}' to user friends`, user.amis);}
 
-replaceFriendOfUser(user, "Mas", "Michel");
-console.log("replaced 'Mas' by 'Michel' in user friends", user.amis);
+const replacement = {toRemove: "Mas", toAdd: "Michel"}
+const resultReplace = replaceFriendOfUser(user, replacement.toRemove, replacement.toAdd);
+if(resultReplace) {
+    console.log(`replaced '${replacement.toRemove}' by '${replacement.toAdd}' in user friends`, user.amis);
+}
 
 const loopThroughFriendListOfUser = (selectedUser) => {
     console.log(">>looping through friendlist");
